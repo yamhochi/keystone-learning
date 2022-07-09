@@ -29,7 +29,7 @@ const session = statelessSessions({
 export default config({
     db: {
         provider: 'postgresql',
-        url: 'postgres://postgres:buildthedamnthing@localhost:5433/learning-ks',
+        url: 'postgres://postgres:buildthedamnthing@localhost:5432/learning-ks',
         // onConnect: async context => { /* ... */ },
         // Optional advanced configuration
         enableLogging: true,
