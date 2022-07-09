@@ -5,7 +5,7 @@ import { statelessSessions } from '@keystone-6/core/session';
 
 
 export const SESSION_MAX_AGE = parseInt(process.env.SESSION_MAX_AGE) || 60 * 60 * 24 * 30;
-// export const PORT = parseInt(process.env.PORT) || 3000;
+export const PORT = parseInt(process.env.PORT) || 3000;
 // If the environment doesn't supply a value, default the secret to a secure random string
 // This will cause all cookies to be invalidated with each app restart (annoying but better than having a hardcoded default)
 // A secure value will be set in your Heroku deploy if you use the "Deploy to Heroku" button or follow the instructions in the README
