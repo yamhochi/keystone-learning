@@ -2,12 +2,24 @@
   "name": "keystone-learning",
   "version": "1.0.0",
   "description": "learning keystone",
-  "main": "index.js",
+  "main": "keystone.ts",
+  "repository": "git@github.com:yamhochi/keystone-learning.git",
   "author": "andie yam",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "^14.15 || ^16.13"
+  },
+  "scripts": {
+    "dev": "keystone dev",
+    "start": "keystone start",
+    "build": "keystone build && keystone prisma migrate deploy"
+  },
   "dependencies": {
     "@keystone-6/core": "^2.1.0",
+    "@keystone-6/auth": "^1.0.0"
+  },
+  "devDependencies": {
     "typescript": "^4.7.4"
   }
 }
