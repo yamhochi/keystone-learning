@@ -1,0 +1,13 @@
+{
+  "name": "keystone-learning",
+  "version": "1.0.0",
+  "description": "learning keystone",
+  "main": "index.js",
+  "author": "andie yan",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@keystone-6/core": "^2.1.0",
+    "typescript": "^4.7.4"
+  }
+}
