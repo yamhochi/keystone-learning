@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "learning keystone",
   "main": "index.js",
-  "author": "andie yan",
+  "author": "andie yam",
   "license": "MIT",
   "private": true,
   "dependencies": {
