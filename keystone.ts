@@ -1,5 +1,6 @@
 // keystone.ts
 import { config, list } from '@keystone-6/core';
+import { lists } from './schema';
 import { text } from '@keystone-6/core/fields';
 import { statelessSessions } from '@keystone-6/core/session';
 
@@ -31,6 +32,7 @@ export default config({
         provider: 'postgresql',
         // url: 'postgres://postgres:buildthedamnthing@localhost:5432/learning-ks',
         url: process.env.DATABASE_URL || `postgres://${process.env.USER}@localhost/learning-ks`,
+        // url: process.env.DATABASE_URL || "",
         // onConnect: async context => { /* ... */ },
         // Optional advanced configuration
         enableLogging: true,
@@ -38,17 +40,10 @@ export default config({
         idField: { kind: 'uuid' },
         // shadowDatabaseUrl: 'postgres://dbuser:dbpass@localhost:5432/shadowdb'
       },
-
+    //listening port  
     server: { port: PORT }, 
-    
-    lists: {
-      User: list({
-        fields: {
-          name: text({ validation: { isRequired: true } }),
-          email: text({ validation: { isRequired: true }, isIndexed: 'unique' }),
-        },
-      }),
-    },
+    //get the user list
+    lists
 
     // session,
   });
