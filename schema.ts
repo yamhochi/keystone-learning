@@ -11,6 +11,18 @@ export const lists = {
         //   password: password({ isRequired: true }),
         },
       }),
+
+
+      //then i need to add a socials list
+
+      //and a payments list
+
+      //blog (this is the news site)
+
+      //pages to get content data
+          //home 
+          //services
+          //
 }
 
 

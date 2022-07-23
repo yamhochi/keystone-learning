@@ -43,7 +43,7 @@ export default config({
     //listening port  
     server: { port: PORT }, 
     //get the user list
-    lists
+    lists,
 
-    // session,
+    session
   });
