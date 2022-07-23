@@ -45,5 +45,5 @@ export default config({
     //get the user list
     lists,
 
-    session
+    // session
   });

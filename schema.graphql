@@ -5,6 +5,20 @@ type User {
   id: ID!
   name: String
   email: String
+  socials(
+    where: SocialWhereInput! = {}
+    orderBy: [SocialOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Social!]
+  socialsCount(where: SocialWhereInput! = {}): Int
+  payments(
+    where: PaymentWhereInput! = {}
+    orderBy: [PaymentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Payment!]
+  paymentsCount(where: PaymentWhereInput! = {}): Int
 }
 
 input UserWhereUniqueInput {
@@ -18,6 +32,8 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
+  socials: SocialManyRelationFilter
+  payments: PaymentManyRelationFilter
 }
 
 input IDFilter {
@@ -65,6 +81,18 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input SocialManyRelationFilter {
+  every: SocialWhereInput
+  some: SocialWhereInput
+  none: SocialWhereInput
+}
+
+input PaymentManyRelationFilter {
+  every: PaymentWhereInput
+  some: PaymentWhereInput
+  none: PaymentWhereInput
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -79,6 +107,22 @@ enum OrderDirection {
 input UserUpdateInput {
   name: String
   email: String
+  socials: SocialRelateToManyForUpdateInput
+  payments: PaymentRelateToManyForUpdateInput
+}
+
+input SocialRelateToManyForUpdateInput {
+  disconnect: [SocialWhereUniqueInput!]
+  set: [SocialWhereUniqueInput!]
+  create: [SocialCreateInput!]
+  connect: [SocialWhereUniqueInput!]
+}
+
+input PaymentRelateToManyForUpdateInput {
+  disconnect: [PaymentWhereUniqueInput!]
+  set: [PaymentWhereUniqueInput!]
+  create: [PaymentCreateInput!]
+  connect: [PaymentWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -89,6 +133,175 @@ input UserUpdateArgs {
 input UserCreateInput {
   name: String
   email: String
+  socials: SocialRelateToManyForCreateInput
+  payments: PaymentRelateToManyForCreateInput
+}
+
+input SocialRelateToManyForCreateInput {
+  create: [SocialCreateInput!]
+  connect: [SocialWhereUniqueInput!]
+}
+
+input PaymentRelateToManyForCreateInput {
+  create: [PaymentCreateInput!]
+  connect: [PaymentWhereUniqueInput!]
+}
+
+type Social {
+  id: ID!
+  title: String
+  date: DateTime
+  attendees(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  attendeesCount(where: UserWhereInput! = {}): Int
+  payments(
+    where: PaymentWhereInput! = {}
+    orderBy: [PaymentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Payment!]
+  paymentsCount(where: PaymentWhereInput! = {}): Int
+}
+
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+input SocialWhereUniqueInput {
+  id: ID
+}
+
+input SocialWhereInput {
+  AND: [SocialWhereInput!]
+  OR: [SocialWhereInput!]
+  NOT: [SocialWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  date: DateTimeNullableFilter
+  attendees: UserManyRelationFilter
+  payments: PaymentManyRelationFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input SocialOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  date: OrderDirection
+}
+
+input SocialUpdateInput {
+  title: String
+  date: DateTime
+  attendees: UserRelateToManyForUpdateInput
+  payments: PaymentRelateToManyForUpdateInput
+}
+
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input SocialUpdateArgs {
+  where: SocialWhereUniqueInput!
+  data: SocialUpdateInput!
+}
+
+input SocialCreateInput {
+  title: String
+  date: DateTime
+  attendees: UserRelateToManyForCreateInput
+  payments: PaymentRelateToManyForCreateInput
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+type Payment {
+  id: ID!
+  payer: User
+  payment_date: DateTime
+  socials: Social
+}
+
+input PaymentWhereUniqueInput {
+  id: ID
+}
+
+input PaymentWhereInput {
+  AND: [PaymentWhereInput!]
+  OR: [PaymentWhereInput!]
+  NOT: [PaymentWhereInput!]
+  id: IDFilter
+  payer: UserWhereInput
+  payment_date: DateTimeNullableFilter
+  socials: SocialWhereInput
+}
+
+input PaymentOrderByInput {
+  id: OrderDirection
+  payment_date: OrderDirection
+}
+
+input PaymentUpdateInput {
+  payer: UserRelateToOneForUpdateInput
+  payment_date: DateTime
+  socials: SocialRelateToOneForUpdateInput
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+}
+
+input SocialRelateToOneForUpdateInput {
+  create: SocialCreateInput
+  connect: SocialWhereUniqueInput
+  disconnect: Boolean
+}
+
+input PaymentUpdateArgs {
+  where: PaymentWhereUniqueInput!
+  data: PaymentUpdateInput!
+}
+
+input PaymentCreateInput {
+  payer: UserRelateToOneForCreateInput
+  payment_date: DateTime
+  socials: SocialRelateToOneForCreateInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input SocialRelateToOneForCreateInput {
+  create: SocialCreateInput
+  connect: SocialWhereUniqueInput
 }
 
 """
@@ -106,6 +319,21 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createSocial(data: SocialCreateInput!): Social
+  createSocials(data: [SocialCreateInput!]!): [Social]
+  updateSocial(where: SocialWhereUniqueInput!, data: SocialUpdateInput!): Social
+  updateSocials(data: [SocialUpdateArgs!]!): [Social]
+  deleteSocial(where: SocialWhereUniqueInput!): Social
+  deleteSocials(where: [SocialWhereUniqueInput!]!): [Social]
+  createPayment(data: PaymentCreateInput!): Payment
+  createPayments(data: [PaymentCreateInput!]!): [Payment]
+  updatePayment(
+    where: PaymentWhereUniqueInput!
+    data: PaymentUpdateInput!
+  ): Payment
+  updatePayments(data: [PaymentUpdateArgs!]!): [Payment]
+  deletePayment(where: PaymentWhereUniqueInput!): Payment
+  deletePayments(where: [PaymentWhereUniqueInput!]!): [Payment]
 }
 
 type Query {
@@ -117,6 +345,22 @@ type Query {
   ): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
+  socials(
+    where: SocialWhereInput! = {}
+    orderBy: [SocialOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Social!]
+  social(where: SocialWhereUniqueInput!): Social
+  socialsCount(where: SocialWhereInput! = {}): Int
+  payments(
+    where: PaymentWhereInput! = {}
+    orderBy: [PaymentOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Payment!]
+  payment(where: PaymentWhereUniqueInput!): Payment
+  paymentsCount(where: PaymentWhereInput! = {}): Int
   keystone: KeystoneMeta!
 }
 
