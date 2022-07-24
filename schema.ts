@@ -1,57 +1,39 @@
 // import { list } from '@keystone-6/core';
-import { list } from '@keystone-6/core';
-import { checkbox, password, relationship, text, timestamp, select } from '@keystone-6/core/fields';
+import { config, list } from '@keystone-6/core';
+import { virtual, checkbox, password, relationship, text, timestamp, select, integer } from '@keystone-6/core/fields';
 
 
 export const lists = {
   User: list({
     fields: {
-      name: text({ isRequired: true }),
-      email: text({ isRequired: true, isUnique: true }),
-      socials: relationship({
-        ref: 'Social.attendees', many: true
-      }),
-      payments: relationship({
-        ref: 'Payment.payer', many: true
-        })
-      //   password: password({ isRequired: true }),
+      name: text({ validation: { isRequired: true } }),
+      email: text({ validation: { isRequired: true }, isIndexed: 'unique' }),  
+      attendances: relationship({ ref: 'Attendance.player', many:true}) 
     },
   }),
+
   //then i need to add a socials list
   Social: list({
     fields: {
-      title: text({ isRequired: true }),
+      title: text({  validation: { isRequired: true } }),
       date: timestamp(),
-      attendees: relationship({
-        ref: 'User.socials',  
-        many: true,
-        ui: {
-          hideCreate: true,
-          displayMode: 'cards',
-          cardFields: ['name'] , 
-        },
-        
-      }),
-      payments: relationship({
-        ref: 'Payment.socials', 
-        many: true, 
-        ui: {
-          displayMode: 'count',
-        }     
-      })
+      attendances: relationship({ref: 'Attendance.session', many:true})
+    },
+  }),
+
+  Attendance: list({
+    fields: {
+      session: relationship({ ref: 'Social.attendances', many: false}),
+      player: relationship({ ref: 'User.attendances', many:false}),
+      payment: relationship({ ref: 'Payment.attendances', many:false}),
     }
   }),
 
-  //and a payments list
   Payment: list({
     fields: {
-      payer: relationship({
-        ref:'User.payments', many: false
-      }),
-      payment_date: timestamp(),
-      socials: relationship({
-        ref: 'Social.payments', many: false
-      })
+      amount: integer(),
+      attendances: relationship({ref: 'Attendance.payment', many:false}),
+      // didpay: relationship({ ref: 'Payment.attendances'})
     }
   })
 

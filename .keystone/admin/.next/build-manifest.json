@@ -25,15 +25,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/payments/[id]": [
+    "/attendances": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/payments/[id].js"
+      "static/chunks/pages/attendances.js"
     ],
-    "/socials/[id]": [
+    "/payments": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/socials/[id].js"
+      "static/chunks/pages/payments.js"
+    ],
+    "/socials": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/socials.js"
     ]
   },
   "ampFirstPages": []

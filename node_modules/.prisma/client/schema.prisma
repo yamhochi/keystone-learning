@@ -13,29 +13,34 @@ generator client {
 }
 
 model User {
-  id       String    @id @default(uuid()) @postgresql.Uuid
-  name     String    @default("")
-  email    String    @default("")
-  socials  Social[]  @relation("Social_attendees")
-  payments Payment[] @relation("Payment_payer")
+  id          String       @id @default(uuid()) @postgresql.Uuid
+  name        String       @default("")
+  email       String       @unique @default("")
+  attendances Attendance[] @relation("Attendance_player")
 }
 
 model Social {
-  id        String    @id @default(uuid()) @postgresql.Uuid
-  title     String    @default("")
-  date      DateTime?
-  attendees User[]    @relation("Social_attendees")
-  payments  Payment[] @relation("Payment_socials")
+  id          String       @id @default(uuid()) @postgresql.Uuid
+  title       String       @default("")
+  date        DateTime?
+  attendances Attendance[] @relation("Attendance_session")
+}
+
+model Attendance {
+  id        String   @id @default(uuid()) @postgresql.Uuid
+  session   Social?  @relation("Attendance_session", fields: [sessionId], references: [id])
+  sessionId String?  @map("session") @postgresql.Uuid
+  player    User?    @relation("Attendance_player", fields: [playerId], references: [id])
+  playerId  String?  @map("player") @postgresql.Uuid
+  payment   Payment? @relation("Attendance_payment", fields: [paymentId], references: [id])
+  paymentId String?  @unique @map("payment") @postgresql.Uuid
+
+  @@index([sessionId])
+  @@index([playerId])
 }
 
 model Payment {
-  id           String    @id @default(uuid()) @postgresql.Uuid
-  payer        User?     @relation("Payment_payer", fields: [payerId], references: [id])
-  payerId      String?   @map("payer") @postgresql.Uuid
-  payment_date DateTime?
-  socials      Social?   @relation("Payment_socials", fields: [socialsId], references: [id])
-  socialsId    String?   @map("socials") @postgresql.Uuid
-
-  @@index([payerId])
-  @@index([socialsId])
+  id          String      @id @default(uuid()) @postgresql.Uuid
+  amount      Int?
+  attendances Attendance? @relation("Attendance_payment")
 }
