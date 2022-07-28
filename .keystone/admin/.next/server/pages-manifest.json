@@ -2,6 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/payments": "pages/payments.js",
-  "/api/__keystone_api_build": "pages/api/__keystone_api_build.js"
+  "/api/__keystone_api_build": "pages/api/__keystone_api_build.js",
+  "/socials/[id]": "pages/socials/[id].js",
+  "/users": "pages/users.js",
+  "/users/[id]": "pages/users/[id].js"
 }

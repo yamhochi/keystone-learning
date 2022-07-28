@@ -7,7 +7,19 @@ export const lists = {
   User: list({
     fields: {
       name: text({ validation: { isRequired: true } }),
-      email: text({ validation: { isRequired: true }, isIndexed: 'unique' }),  
+      email: text({ 
+        validation: { isRequired: true }, 
+        isIndexed: 'unique', 
+        ui: {
+          itemView: {
+            fieldMode: "read",
+          },
+          listView: {
+            fieldMode: "read",
+          },
+        },
+
+      }),  
       attendances: relationship({ ref: 'Attendance.player', many:true}) 
     },
   }),
