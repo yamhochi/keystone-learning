@@ -5,13 +5,13 @@ type User {
   id: ID!
   name: String
   email: String
-  attendances(
-    where: AttendanceWhereInput! = {}
-    orderBy: [AttendanceOrderByInput!]! = []
+  sessions(
+    where: SessionWhereInput! = {}
+    orderBy: [SessionOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Attendance!]
-  attendancesCount(where: AttendanceWhereInput! = {}): Int
+  ): [Session!]
+  sessionsCount(where: SessionWhereInput! = {}): Int
 }
 
 input UserWhereUniqueInput {
@@ -26,7 +26,7 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  attendances: AttendanceManyRelationFilter
+  sessions: SessionManyRelationFilter
 }
 
 input IDFilter {
@@ -74,10 +74,10 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input AttendanceManyRelationFilter {
-  every: AttendanceWhereInput
-  some: AttendanceWhereInput
-  none: AttendanceWhereInput
+input SessionManyRelationFilter {
+  every: SessionWhereInput
+  some: SessionWhereInput
+  none: SessionWhereInput
 }
 
 input UserOrderByInput {
@@ -94,14 +94,14 @@ enum OrderDirection {
 input UserUpdateInput {
   name: String
   email: String
-  attendances: AttendanceRelateToManyForUpdateInput
+  sessions: SessionRelateToManyForUpdateInput
 }
 
-input AttendanceRelateToManyForUpdateInput {
-  disconnect: [AttendanceWhereUniqueInput!]
-  set: [AttendanceWhereUniqueInput!]
-  create: [AttendanceCreateInput!]
-  connect: [AttendanceWhereUniqueInput!]
+input SessionRelateToManyForUpdateInput {
+  disconnect: [SessionWhereUniqueInput!]
+  set: [SessionWhereUniqueInput!]
+  create: [SessionCreateInput!]
+  connect: [SessionWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -112,42 +112,42 @@ input UserUpdateArgs {
 input UserCreateInput {
   name: String
   email: String
-  attendances: AttendanceRelateToManyForCreateInput
+  sessions: SessionRelateToManyForCreateInput
 }
 
-input AttendanceRelateToManyForCreateInput {
-  create: [AttendanceCreateInput!]
-  connect: [AttendanceWhereUniqueInput!]
+input SessionRelateToManyForCreateInput {
+  create: [SessionCreateInput!]
+  connect: [SessionWhereUniqueInput!]
 }
 
-type Social {
+type Session {
   id: ID!
   title: String
   date: DateTime
-  attendances(
-    where: AttendanceWhereInput! = {}
-    orderBy: [AttendanceOrderByInput!]! = []
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Attendance!]
-  attendancesCount(where: AttendanceWhereInput! = {}): Int
+  ): [User!]
+  usersCount(where: UserWhereInput! = {}): Int
 }
 
 scalar DateTime
   @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
-input SocialWhereUniqueInput {
+input SessionWhereUniqueInput {
   id: ID
 }
 
-input SocialWhereInput {
-  AND: [SocialWhereInput!]
-  OR: [SocialWhereInput!]
-  NOT: [SocialWhereInput!]
+input SessionWhereInput {
+  AND: [SessionWhereInput!]
+  OR: [SessionWhereInput!]
+  NOT: [SessionWhereInput!]
   id: IDFilter
   title: StringFilter
   date: DateTimeNullableFilter
-  attendances: AttendanceManyRelationFilter
+  users: UserManyRelationFilter
 }
 
 input DateTimeNullableFilter {
@@ -161,163 +161,45 @@ input DateTimeNullableFilter {
   not: DateTimeNullableFilter
 }
 
-input SocialOrderByInput {
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
+}
+
+input SessionOrderByInput {
   id: OrderDirection
   title: OrderDirection
   date: OrderDirection
 }
 
-input SocialUpdateInput {
+input SessionUpdateInput {
   title: String
   date: DateTime
-  attendances: AttendanceRelateToManyForUpdateInput
+  users: UserRelateToManyForUpdateInput
 }
 
-input SocialUpdateArgs {
-  where: SocialWhereUniqueInput!
-  data: SocialUpdateInput!
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
-input SocialCreateInput {
+input SessionUpdateArgs {
+  where: SessionWhereUniqueInput!
+  data: SessionUpdateInput!
+}
+
+input SessionCreateInput {
   title: String
   date: DateTime
-  attendances: AttendanceRelateToManyForCreateInput
+  users: UserRelateToManyForCreateInput
 }
 
-type Attendance {
-  id: ID!
-  session: Social
-  player: User
-  payment: Payment
-}
-
-input AttendanceWhereUniqueInput {
-  id: ID
-}
-
-input AttendanceWhereInput {
-  AND: [AttendanceWhereInput!]
-  OR: [AttendanceWhereInput!]
-  NOT: [AttendanceWhereInput!]
-  id: IDFilter
-  session: SocialWhereInput
-  player: UserWhereInput
-  payment: PaymentWhereInput
-}
-
-input AttendanceOrderByInput {
-  id: OrderDirection
-}
-
-input AttendanceUpdateInput {
-  session: SocialRelateToOneForUpdateInput
-  player: UserRelateToOneForUpdateInput
-  payment: PaymentRelateToOneForUpdateInput
-}
-
-input SocialRelateToOneForUpdateInput {
-  create: SocialCreateInput
-  connect: SocialWhereUniqueInput
-  disconnect: Boolean
-}
-
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-}
-
-input PaymentRelateToOneForUpdateInput {
-  create: PaymentCreateInput
-  connect: PaymentWhereUniqueInput
-  disconnect: Boolean
-}
-
-input AttendanceUpdateArgs {
-  where: AttendanceWhereUniqueInput!
-  data: AttendanceUpdateInput!
-}
-
-input AttendanceCreateInput {
-  session: SocialRelateToOneForCreateInput
-  player: UserRelateToOneForCreateInput
-  payment: PaymentRelateToOneForCreateInput
-}
-
-input SocialRelateToOneForCreateInput {
-  create: SocialCreateInput
-  connect: SocialWhereUniqueInput
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
-input PaymentRelateToOneForCreateInput {
-  create: PaymentCreateInput
-  connect: PaymentWhereUniqueInput
-}
-
-type Payment {
-  id: ID!
-  amount: Int
-  attendances: Attendance
-}
-
-input PaymentWhereUniqueInput {
-  id: ID
-}
-
-input PaymentWhereInput {
-  AND: [PaymentWhereInput!]
-  OR: [PaymentWhereInput!]
-  NOT: [PaymentWhereInput!]
-  id: IDFilter
-  amount: IntNullableFilter
-  attendances: AttendanceWhereInput
-}
-
-input IntNullableFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntNullableFilter
-}
-
-input PaymentOrderByInput {
-  id: OrderDirection
-  amount: OrderDirection
-}
-
-input PaymentUpdateInput {
-  amount: Int
-  attendances: AttendanceRelateToOneForUpdateInput
-}
-
-input AttendanceRelateToOneForUpdateInput {
-  create: AttendanceCreateInput
-  connect: AttendanceWhereUniqueInput
-  disconnect: Boolean
-}
-
-input PaymentUpdateArgs {
-  where: PaymentWhereUniqueInput!
-  data: PaymentUpdateInput!
-}
-
-input PaymentCreateInput {
-  amount: Int
-  attendances: AttendanceRelateToOneForCreateInput
-}
-
-input AttendanceRelateToOneForCreateInput {
-  create: AttendanceCreateInput
-  connect: AttendanceWhereUniqueInput
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 """
@@ -335,30 +217,15 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createSocial(data: SocialCreateInput!): Social
-  createSocials(data: [SocialCreateInput!]!): [Social]
-  updateSocial(where: SocialWhereUniqueInput!, data: SocialUpdateInput!): Social
-  updateSocials(data: [SocialUpdateArgs!]!): [Social]
-  deleteSocial(where: SocialWhereUniqueInput!): Social
-  deleteSocials(where: [SocialWhereUniqueInput!]!): [Social]
-  createAttendance(data: AttendanceCreateInput!): Attendance
-  createAttendances(data: [AttendanceCreateInput!]!): [Attendance]
-  updateAttendance(
-    where: AttendanceWhereUniqueInput!
-    data: AttendanceUpdateInput!
-  ): Attendance
-  updateAttendances(data: [AttendanceUpdateArgs!]!): [Attendance]
-  deleteAttendance(where: AttendanceWhereUniqueInput!): Attendance
-  deleteAttendances(where: [AttendanceWhereUniqueInput!]!): [Attendance]
-  createPayment(data: PaymentCreateInput!): Payment
-  createPayments(data: [PaymentCreateInput!]!): [Payment]
-  updatePayment(
-    where: PaymentWhereUniqueInput!
-    data: PaymentUpdateInput!
-  ): Payment
-  updatePayments(data: [PaymentUpdateArgs!]!): [Payment]
-  deletePayment(where: PaymentWhereUniqueInput!): Payment
-  deletePayments(where: [PaymentWhereUniqueInput!]!): [Payment]
+  createSession(data: SessionCreateInput!): Session
+  createSessions(data: [SessionCreateInput!]!): [Session]
+  updateSession(
+    where: SessionWhereUniqueInput!
+    data: SessionUpdateInput!
+  ): Session
+  updateSessions(data: [SessionUpdateArgs!]!): [Session]
+  deleteSession(where: SessionWhereUniqueInput!): Session
+  deleteSessions(where: [SessionWhereUniqueInput!]!): [Session]
 }
 
 type Query {
@@ -370,30 +237,14 @@ type Query {
   ): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
-  socials(
-    where: SocialWhereInput! = {}
-    orderBy: [SocialOrderByInput!]! = []
+  sessions(
+    where: SessionWhereInput! = {}
+    orderBy: [SessionOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Social!]
-  social(where: SocialWhereUniqueInput!): Social
-  socialsCount(where: SocialWhereInput! = {}): Int
-  attendances(
-    where: AttendanceWhereInput! = {}
-    orderBy: [AttendanceOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Attendance!]
-  attendance(where: AttendanceWhereUniqueInput!): Attendance
-  attendancesCount(where: AttendanceWhereInput! = {}): Int
-  payments(
-    where: PaymentWhereInput! = {}
-    orderBy: [PaymentOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Payment!]
-  payment(where: PaymentWhereUniqueInput!): Payment
-  paymentsCount(where: PaymentWhereInput! = {}): Int
+  ): [Session!]
+  session(where: SessionWhereUniqueInput!): Session
+  sessionsCount(where: SessionWhereInput! = {}): Int
   keystone: KeystoneMeta!
 }
 
