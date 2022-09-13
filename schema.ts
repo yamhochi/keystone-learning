@@ -7,30 +7,48 @@ export const lists = {
   User: list({
     fields: {
       name: text({ validation: { isRequired: true } }),
-      email: text({ 
-        validation: { isRequired: true }, 
-        isIndexed: 'unique', 
+      email: text({
+        validation: { isRequired: true },
+        isIndexed: 'unique',
+        // ui: {
+        //   itemView: {
+        //     fieldMode: "read",
+        //   },
+        //   listView: {
+        //     fieldMode: "read",
+        //   },
+        // },
+      }),
+      sessions: relationship({
+        ref: 'Session.users',
+        many: true,
         ui: {
           itemView: {
             fieldMode: "read",
           },
-          listView: {
-            fieldMode: "read",
-          },
-        },
-
-      }),  
-      sessions: relationship({ ref: 'Session.users', many:true}) 
+        }
+      })
+    },
+    hooks: {
+      afterOperation: ({ operation, item }) => {
+        if (operation === 'create') {
+          console.log(`New user created. Name: ${item.name}, Email: ${item.email}`);
+        }
+      }
     },
   }),
 
   //then i need to add a socials list
   Session: list({
     fields: {
-      title: text({  validation: { isRequired: true } }),
+      title: text({
+        validation: { isRequired: true }
+      }),
       date: timestamp(),
-      users: relationship({ref: 'User.sessions', many:true})
-    },
+      users: relationship({
+        ref: 'User.sessions', many: true,
+      })
+    }
   }),
 
   //blog (this is the news site)
@@ -40,8 +58,3 @@ export const lists = {
   //services
   //
 }
-
-
-
-
-

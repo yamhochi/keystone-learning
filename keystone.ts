@@ -44,6 +44,5 @@ export default config({
     server: { port: PORT }, 
     //get the user list
     lists,
-
     // session
   });
