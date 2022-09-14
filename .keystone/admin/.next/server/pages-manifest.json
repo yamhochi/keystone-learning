@@ -2,5 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/__keystone_api_build": "pages/api/__keystone_api_build.js"
+  "/invoices/[id]": "pages/invoices/[id].js",
+  "/api/__keystone_api_build": "pages/api/__keystone_api_build.js",
+  "/invoices": "pages/invoices.js"
 }

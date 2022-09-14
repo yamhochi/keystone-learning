@@ -5,13 +5,13 @@ type User {
   id: ID!
   name: String
   email: String
-  sessions(
-    where: SessionWhereInput! = {}
-    orderBy: [SessionOrderByInput!]! = []
+  invoices(
+    where: InvoiceWhereInput! = {}
+    orderBy: [InvoiceOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Session!]
-  sessionsCount(where: SessionWhereInput! = {}): Int
+  ): [Invoice!]
+  invoicesCount(where: InvoiceWhereInput! = {}): Int
 }
 
 input UserWhereUniqueInput {
@@ -26,7 +26,7 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  sessions: SessionManyRelationFilter
+  invoices: InvoiceManyRelationFilter
 }
 
 input IDFilter {
@@ -74,10 +74,10 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input SessionManyRelationFilter {
-  every: SessionWhereInput
-  some: SessionWhereInput
-  none: SessionWhereInput
+input InvoiceManyRelationFilter {
+  every: InvoiceWhereInput
+  some: InvoiceWhereInput
+  none: InvoiceWhereInput
 }
 
 input UserOrderByInput {
@@ -94,14 +94,14 @@ enum OrderDirection {
 input UserUpdateInput {
   name: String
   email: String
-  sessions: SessionRelateToManyForUpdateInput
+  invoices: InvoiceRelateToManyForUpdateInput
 }
 
-input SessionRelateToManyForUpdateInput {
-  disconnect: [SessionWhereUniqueInput!]
-  set: [SessionWhereUniqueInput!]
-  create: [SessionCreateInput!]
-  connect: [SessionWhereUniqueInput!]
+input InvoiceRelateToManyForUpdateInput {
+  disconnect: [InvoiceWhereUniqueInput!]
+  set: [InvoiceWhereUniqueInput!]
+  create: [InvoiceCreateInput!]
+  connect: [InvoiceWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -112,25 +112,25 @@ input UserUpdateArgs {
 input UserCreateInput {
   name: String
   email: String
-  sessions: SessionRelateToManyForCreateInput
+  invoices: InvoiceRelateToManyForCreateInput
 }
 
-input SessionRelateToManyForCreateInput {
-  create: [SessionCreateInput!]
-  connect: [SessionWhereUniqueInput!]
+input InvoiceRelateToManyForCreateInput {
+  create: [InvoiceCreateInput!]
+  connect: [InvoiceWhereUniqueInput!]
 }
 
 type Session {
   id: ID!
   title: String
   date: DateTime
-  users(
-    where: UserWhereInput! = {}
-    orderBy: [UserOrderByInput!]! = []
+  invoices(
+    where: InvoiceWhereInput! = {}
+    orderBy: [InvoiceOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [User!]
-  usersCount(where: UserWhereInput! = {}): Int
+  ): [Invoice!]
+  invoicesCount(where: InvoiceWhereInput! = {}): Int
 }
 
 scalar DateTime
@@ -147,7 +147,7 @@ input SessionWhereInput {
   id: IDFilter
   title: StringFilter
   date: DateTimeNullableFilter
-  users: UserManyRelationFilter
+  invoices: InvoiceManyRelationFilter
 }
 
 input DateTimeNullableFilter {
@@ -161,12 +161,6 @@ input DateTimeNullableFilter {
   not: DateTimeNullableFilter
 }
 
-input UserManyRelationFilter {
-  every: UserWhereInput
-  some: UserWhereInput
-  none: UserWhereInput
-}
-
 input SessionOrderByInput {
   id: OrderDirection
   title: OrderDirection
@@ -176,14 +170,7 @@ input SessionOrderByInput {
 input SessionUpdateInput {
   title: String
   date: DateTime
-  users: UserRelateToManyForUpdateInput
-}
-
-input UserRelateToManyForUpdateInput {
-  disconnect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
+  invoices: InvoiceRelateToManyForUpdateInput
 }
 
 input SessionUpdateArgs {
@@ -194,12 +181,77 @@ input SessionUpdateArgs {
 input SessionCreateInput {
   title: String
   date: DateTime
-  users: UserRelateToManyForCreateInput
+  invoices: InvoiceRelateToManyForCreateInput
 }
 
-input UserRelateToManyForCreateInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
+type Invoice {
+  id: ID!
+  sessions: Session
+  users: User
+  paid: Boolean
+}
+
+input InvoiceWhereUniqueInput {
+  id: ID
+}
+
+input InvoiceWhereInput {
+  AND: [InvoiceWhereInput!]
+  OR: [InvoiceWhereInput!]
+  NOT: [InvoiceWhereInput!]
+  id: IDFilter
+  sessions: SessionWhereInput
+  users: UserWhereInput
+  paid: BooleanFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input InvoiceOrderByInput {
+  id: OrderDirection
+  paid: OrderDirection
+}
+
+input InvoiceUpdateInput {
+  sessions: SessionRelateToOneForUpdateInput
+  users: UserRelateToOneForUpdateInput
+  paid: Boolean
+}
+
+input SessionRelateToOneForUpdateInput {
+  create: SessionCreateInput
+  connect: SessionWhereUniqueInput
+  disconnect: Boolean
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+}
+
+input InvoiceUpdateArgs {
+  where: InvoiceWhereUniqueInput!
+  data: InvoiceUpdateInput!
+}
+
+input InvoiceCreateInput {
+  sessions: SessionRelateToOneForCreateInput
+  users: UserRelateToOneForCreateInput
+  paid: Boolean
+}
+
+input SessionRelateToOneForCreateInput {
+  create: SessionCreateInput
+  connect: SessionWhereUniqueInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 """
@@ -226,6 +278,15 @@ type Mutation {
   updateSessions(data: [SessionUpdateArgs!]!): [Session]
   deleteSession(where: SessionWhereUniqueInput!): Session
   deleteSessions(where: [SessionWhereUniqueInput!]!): [Session]
+  createInvoice(data: InvoiceCreateInput!): Invoice
+  createInvoices(data: [InvoiceCreateInput!]!): [Invoice]
+  updateInvoice(
+    where: InvoiceWhereUniqueInput!
+    data: InvoiceUpdateInput!
+  ): Invoice
+  updateInvoices(data: [InvoiceUpdateArgs!]!): [Invoice]
+  deleteInvoice(where: InvoiceWhereUniqueInput!): Invoice
+  deleteInvoices(where: [InvoiceWhereUniqueInput!]!): [Invoice]
 }
 
 type Query {
@@ -245,6 +306,14 @@ type Query {
   ): [Session!]
   session(where: SessionWhereUniqueInput!): Session
   sessionsCount(where: SessionWhereInput! = {}): Int
+  invoices(
+    where: InvoiceWhereInput! = {}
+    orderBy: [InvoiceOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Invoice!]
+  invoice(where: InvoiceWhereUniqueInput!): Invoice
+  invoicesCount(where: InvoiceWhereInput! = {}): Int
   keystone: KeystoneMeta!
 }
 

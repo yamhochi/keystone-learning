@@ -16,12 +16,24 @@ model User {
   id       String    @id @default(uuid()) @postgresql.Uuid
   name     String    @default("")
   email    String    @unique @default("")
-  sessions Session[] @relation("Session_users")
+  invoices Invoice[] @relation("Invoice_users")
 }
 
 model Session {
-  id    String    @id @default(uuid()) @postgresql.Uuid
-  title String    @default("")
-  date  DateTime?
-  users User[]    @relation("Session_users")
+  id       String    @id @default(uuid()) @postgresql.Uuid
+  title    String    @default("")
+  date     DateTime?
+  invoices Invoice[] @relation("Invoice_sessions")
+}
+
+model Invoice {
+  id         String   @id @default(uuid()) @postgresql.Uuid
+  sessions   Session? @relation("Invoice_sessions", fields: [sessionsId], references: [id])
+  sessionsId String?  @map("sessions") @postgresql.Uuid
+  users      User?    @relation("Invoice_users", fields: [usersId], references: [id])
+  usersId    String?  @map("users") @postgresql.Uuid
+  paid       Boolean  @default(false)
+
+  @@index([sessionsId])
+  @@index([usersId])
 }
