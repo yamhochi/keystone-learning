@@ -19,13 +19,6 @@ model User {
   invoices Invoice[] @relation("Invoice_users")
 }
 
-model Session {
-  id       String    @id @default(uuid()) @postgresql.Uuid
-  title    String    @default("")
-  date     DateTime?
-  invoices Invoice[] @relation("Invoice_sessions")
-}
-
 model Invoice {
   id         String   @id @default(uuid()) @postgresql.Uuid
   sessions   Session? @relation("Invoice_sessions", fields: [sessionsId], references: [id])
@@ -36,4 +29,11 @@ model Invoice {
 
   @@index([sessionsId])
   @@index([usersId])
+}
+
+model Session {
+  id       String    @id @default(uuid()) @postgresql.Uuid
+  title    String    @default("")
+  date     DateTime?
+  invoices Invoice[] @relation("Invoice_sessions")
 }

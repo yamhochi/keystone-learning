@@ -1,12 +1,12 @@
-import { list } from '@keystone-6/core';
+import { config, graphql, list } from '@keystone-6/core';
 import { virtual, checkbox, password, relationship, text, timestamp, select, integer } from '@keystone-6/core/fields';
 
 
 export const lists = {
   User: list({
     fields: {
-      name: text({ 
-        validation: { isRequired: true } 
+      name: text({
+        validation: { isRequired: true }
       }),
       email: text({
         validation: { isRequired: true },
@@ -30,7 +30,7 @@ export const lists = {
       //   }
       // }),
       invoices: relationship({
-        ref:'Invoice.users',
+        ref: 'Invoice.users',
         many: true,
         ui: {
           itemView: {
@@ -43,36 +43,7 @@ export const lists = {
             fieldMode: "hidden",
           },
         },
-      }) 
-    }
-  }),
-
-  //then i need to add a socials list
-  Session: list({
-    fields: {
-      title: text({
-        validation: { isRequired: true }
-      }),
-      date: timestamp(),
-      // users: relationship({
-      //   ref: 'User.sessions', 
-      //   many: true,
-      // }),
-      invoices: relationship({
-        ref:'Invoice.sessions',
-        many: true,
-        ui: {
-          itemView: {
-            fieldMode: "read",
-          },
-          listView: {
-            fieldMode: "read",
-          },
-          createView: {
-            fieldMode: "hidden",
-          },
-        },
-      }) 
+      })
     }
   }),
 
@@ -83,7 +54,7 @@ export const lists = {
         many: false,
       }),
       users: relationship({
-        ref: 'User.invoices', 
+        ref: 'User.invoices',
         many: false,
         hooks: {
           afterOperation: ({ operation, item, resolvedData }) => {
@@ -97,7 +68,75 @@ export const lists = {
         defaultValue: false
       })
     }
-  })
+  }),
+
+  //then i need to add a socials list
+  Session: list({
+    fields: {
+      title: text({
+        validation: { isRequired: true }
+      }),
+      date: timestamp(),
+      //   ref: 'User.sessions', 
+      //   many: true,
+      // }),
+      invoices: relationship({
+        ref: 'Invoice.sessions',
+        many: true,
+        ui: {
+          itemView: {
+            fieldMode: "read",
+          },
+          listView: {
+            fieldMode: "read",
+          },
+          createView: {
+            fieldMode: "hidden",
+          },
+        },
+      }),
+
+      user_of_invoices: virtual({
+        field: lists =>
+          graphql.field({
+            type: lists.Invoice.types.output,
+            // async resolve(item, args, context){
+            //   const { invoices } = await context.query.Session.findMany({
+            //     where: { id: {equals: item.id.toString()}},
+            //     query: `invoices{id}`
+            //   });
+            //   return invoices
+            // },
+            // async resolve(item, args, context) {
+            //   const { invoices } = await context.query.Invoice.findMany({
+            //     where: { sessions: { id: { equals: item.id.toString() } } },
+            //     query: `users{name}`
+            //   });
+            //   return invoices
+            // }
+              async resolve(item, args, context){
+                const { invoices } = await context.query.Session.findOne({
+                  where: { id: item.id.toString()},
+                  query: `invoices {id sessions{title} users{name}}`
+                });
+                return invoices
+              }
+
+          }),
+
+        ui: { query: '{sessions{title invoices{id users{name}} id}}' },
+        // ui: { query: '{sessions{title}}' },
+
+        //query Invoice list
+        //where Invoice{session {title}} as String
+        //return Invoice {session {user}} as lost
+        //is equal to Session{title}
+
+      })
+    }
+  }),
+
+
 
   //blog (this is the news site)
 
