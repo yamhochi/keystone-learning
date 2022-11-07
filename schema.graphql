@@ -16,6 +16,7 @@ type User {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }
 
 input UserWhereInput {

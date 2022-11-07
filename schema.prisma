@@ -15,10 +15,8 @@ generator client {
 model User {
   id       String    @id @default(uuid()) @postgresql.Uuid
   name     String    @default("")
-  email    String    @default("")
+  email    String    @unique @default("")
   invoices Invoice[] @relation("Invoice_users")
-
-  @@index([email])
 }
 
 model Invoice {

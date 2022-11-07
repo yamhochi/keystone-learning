@@ -13,7 +13,8 @@
   "scripts": {
     "dev": "keystone dev",
     "start": "keystone start",
-    "build": "keystone build && keystone prisma migrate deploy"
+    "build": "keystone build && keystone prisma migrate deploy",
+    "postinstall": "keystone postinstall"
   },
   "dependencies": {
     "@keystone-6/auth": "^1.0.0",

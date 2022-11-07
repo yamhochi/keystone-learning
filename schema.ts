@@ -10,7 +10,7 @@ export const lists = {
       }),
       email: text({
         validation: { isRequired: true },
-        isIndexed: true, // disabled for now to allow test site being played
+        isIndexed: 'unique', // disabled for now to allow test site being played
         // ui: {
         //   itemView: {
         //     fieldMode: "read",
