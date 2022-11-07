@@ -200,6 +200,7 @@ type Session {
     skip: Int! = 0
   ): [Invoice!]
   invoicesCount(where: InvoiceWhereInput! = {}): Int
+  user_of_invoices: Invoice
 }
 
 scalar DateTime

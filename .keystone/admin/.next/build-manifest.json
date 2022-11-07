@@ -25,25 +25,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/invoices": [
+    "/sessions": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/invoices.js"
+      "static/chunks/pages/sessions.js"
     ],
-    "/invoices/[id]": [
+    "/sessions/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/invoices/[id].js"
+      "static/chunks/pages/sessions/[id].js"
     ],
     "/users": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/users.js"
-    ],
-    "/users/[id]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/users/[id].js"
     ]
   },
   "ampFirstPages": []
