@@ -17,6 +17,8 @@ model User {
   name     String    @default("")
   email    String    @default("")
   invoices Invoice[] @relation("Invoice_users")
+
+  @@index([email])
 }
 
 model Invoice {
