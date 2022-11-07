@@ -10,7 +10,7 @@ export const lists = {
       }),
       email: text({
         validation: { isRequired: true },
-        isIndexed: 'unique',
+        // isIndexed: 'unique', // disabled for now to allow test site being played with
         // ui: {
         //   itemView: {
         //     fieldMode: "read",
@@ -56,13 +56,13 @@ export const lists = {
       users: relationship({
         ref: 'User.invoices',
         many: false,
-        hooks: {
-          afterOperation: ({ operation, item, resolvedData }) => {
-            if (operation === 'update') {
-              console.log(item, resolvedData, "This is logged");
-            }
-          },
-        },
+        // hooks: {
+        //   afterOperation: ({ operation, item, resolvedData }) => {
+        //     if (operation === 'update') {
+        //       console.log(item, resolvedData, "This is logged");
+        //     }
+        //   },
+        // },
       }),
       paid: checkbox({
         defaultValue: false
@@ -96,43 +96,43 @@ export const lists = {
         },
       }),
 
-      user_of_invoices: virtual({
-        field: lists =>
-          graphql.field({
-            type: lists.Invoice.types.output,
-            // async resolve(item, args, context){
-            //   const { invoices } = await context.query.Session.findMany({
-            //     where: { id: {equals: item.id.toString()}},
-            //     query: `invoices{id}`
-            //   });
-            //   return invoices
-            // },
-            // async resolve(item, args, context) {
-            //   const { invoices } = await context.query.Invoice.findMany({
-            //     where: { sessions: { id: { equals: item.id.toString() } } },
-            //     query: `users{name}`
-            //   });
-            //   return invoices
-            // }
-              async resolve(item, args, context){
-                const { invoices } = await context.query.Session.findOne({
-                  where: { id: item.id.toString()},
-                  query: `invoices {id sessions{title} users{name}}`
-                });
-                return invoices
-              }
+      // user_of_invoices: virtual({
+      //   field: lists =>
+      //     graphql.field({
+      //       type: lists.Invoice.types.output,
+      //       // async resolve(item, args, context){
+      //       //   const { invoices } = await context.query.Session.findMany({
+      //       //     where: { id: {equals: item.id.toString()}},
+      //       //     query: `invoices{id}`
+      //       //   });
+      //       //   return invoices
+      //       // },
+      //       // async resolve(item, args, context) {
+      //       //   const { invoices } = await context.query.Invoice.findMany({
+      //       //     where: { sessions: { id: { equals: item.id.toString() } } },
+      //       //     query: `users{name}`
+      //       //   });
+      //       //   return invoices
+      //       // }
+      //         async resolve(item, args, context){
+      //           const { invoices } = await context.query.Session.findOne({
+      //             where: { id: item.id.toString()},
+      //             query: `invoices {id sessions{title} users{name}}`
+      //           });
+      //           return invoices
+      //         }
 
-          }),
+      //     }),
 
-        ui: { query: '{sessions{title invoices{id users{name}} id}}' },
-        // ui: { query: '{sessions{title}}' },
+      //   ui: { query: '{sessions{title invoices{id users{name}} id}}' },
+      //   // ui: { query: '{sessions{title}}' },
 
-        //query Invoice list
-        //where Invoice{session {title}} as String
-        //return Invoice {session {user}} as lost
-        //is equal to Session{title}
+      //   //query Invoice list
+      //   //where Invoice{session {title}} as String
+      //   //return Invoice {session {user}} as lost
+      //   //is equal to Session{title}
 
-      })
+      // })
     }
   }),
 
