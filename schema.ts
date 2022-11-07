@@ -10,7 +10,7 @@ export const lists = {
       }),
       email: text({
         validation: { isRequired: true },
-        // isIndexed: 'unique', // disabled for now to allow test site being played with
+        // isIndexed: 'unique', // disabled for now to allow test site being played
         // ui: {
         //   itemView: {
         //     fieldMode: "read",
@@ -56,13 +56,13 @@ export const lists = {
       users: relationship({
         ref: 'User.invoices',
         many: false,
-        // hooks: {
-        //   afterOperation: ({ operation, item, resolvedData }) => {
-        //     if (operation === 'update') {
-        //       console.log(item, resolvedData, "This is logged");
-        //     }
-        //   },
-        // },
+        hooks: {
+          afterOperation: ({ operation, item, resolvedData }) => {
+            if (operation === 'update') {
+              console.log(item, resolvedData, "This is logged");
+            }
+          },
+        },
       }),
       paid: checkbox({
         defaultValue: false
