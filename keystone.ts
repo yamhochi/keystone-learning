@@ -41,7 +41,7 @@ export default config({
         // shadowDatabaseUrl: 'postgres://dbuser:dbpass@localhost:5432/shadowdb'
       },
     //listening port  
-    server: { port: PORT, cors: { origin: ['http://localhost:3001'] }, }, 
+    server: { port: PORT, cors: { origin: ['http://localhost:3001', 'https://keystone-learning-frontend.herokuapp.com'] }, }, 
     //get the user list
     lists,
     // session

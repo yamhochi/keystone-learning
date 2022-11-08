@@ -30,7 +30,7 @@ export const lists = {
       //   }
       // }),
       invoices: relationship({
-        ref: 'Invoice.users',
+        ref:'Invoice.users',
         many: true,
         ui: {
           itemView: {
